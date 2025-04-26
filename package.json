@@ -33,8 +33,6 @@
     "lucide-react": "^0.475.0",
     "next": "15.0.1",
     "next-themes": "^0.4.4",
-    "pdfjs-dist": "^5.0.375",
-    "pspdfkit": "^2024.8.2",
     "react": "^18.3.1",
     "react-country-flags-select": "^1.1.2",
     "react-datepicker": "^7.5.0",
@@ -43,7 +41,6 @@
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.3.0",
     "react-marquee-slider": "^1.1.5",
-    "react-pdf": "^9.2.1",
     "react-redux": "^9.2.0",
     "react-slick": "^0.30.3",
     "react-super-responsive-table": "^6.0.0",
@@ -52,8 +49,7 @@
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^11.1.0",
-    "zustand": "^5.0.3"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.13",
