@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import chatReducer from "@/features/chat/utils/chatSlice";
 import userReducer from "@/store/userSlice";
 import globalReducer from "@/shared/utils/GlobalSlice";
+import quizReducer from "@/features/quiz/utils/quizSlice";
 
 export const store = configureStore({
   reducer: {
     global: globalReducer,
     user: userReducer,
     chat: chatReducer,
+    quiz: quizReducer,
   },
 });
 

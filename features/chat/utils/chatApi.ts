@@ -87,13 +87,25 @@ export const getChatMessages = async (chat_id: string) => {
 
 export const sendMessage = async (
   chat_id: string,
-  user_id: string,
-  user_prompt: string
+  user_prompt: string,
+  model: string
 ) => {
+  let messageUrl = "";
+
+  if (model === "OpenAI") {
+    messageUrl = `open_ai_response?chat_id=${chat_id}&user_prompt=${user_prompt}`;
+  } else if (model === "EnhancedOpenAI") {
+    messageUrl = `enhanced_response_open_ai?chat_id=${chat_id}&user_prompt=${user_prompt}`;
+  } else if (model === "Deepseek") {
+    messageUrl = `deepseek_response?chat_id=${chat_id}&user_prompt=${user_prompt}`;
+  } else if (model === "EnhancedDeepseek") {
+    messageUrl = `enhanced_response_deepseek?chat_id=${chat_id}&user_prompt=${user_prompt}`;
+  } else if (model === "DeepseekQ") {
+    messageUrl = `deepseek_q_response?chat_id=${chat_id}&user_prompt=${user_prompt}`;
+  }
+
   try {
-    const response = await axiosAPI.post(
-      `/getresponse?chat_id=${chat_id}&user_id=${user_id}&user_prompt=${user_prompt}`
-    );
+    const response = await axiosAPI.post(messageUrl);
     const data = response.data;
     return data;
   } catch (error) {

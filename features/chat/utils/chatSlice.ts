@@ -3,10 +3,12 @@ import { Chat } from "./types";
 
 type ChatState = {
   currentChat: Chat | null;
+  selectedModel: string;
 };
 
 const initialState: ChatState = {
   currentChat: null,
+  selectedModel: "OpenAI",
 };
 
 const chatSlice = createSlice({
@@ -16,8 +18,11 @@ const chatSlice = createSlice({
     setCurrentChat: (state, action: PayloadAction<Chat | null>) => {
       state.currentChat = action.payload;
     },
+    setSelectedModel: (state, action: PayloadAction<string>) => {
+      state.selectedModel = action.payload;
+    },
   },
 });
 
-export const { setCurrentChat } = chatSlice.actions;
+export const { setCurrentChat, setSelectedModel } = chatSlice.actions;
 export default chatSlice.reducer;

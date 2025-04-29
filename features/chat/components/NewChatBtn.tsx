@@ -10,7 +10,7 @@ const NewChatBtn = () => {
     <div className="mt-2">
       <Button
         variant="outline"
-        className="w-full justify-start gap-2 border-dashed"
+        className="w-full justify-start gap-2"
         onClick={() => {
           router.push("/chats");
         }}

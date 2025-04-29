@@ -9,17 +9,17 @@ export const useSendMessage = () => {
   return useMutation({
     mutationFn: async ({
       chat_id,
-      user_id,
       user_prompt,
+      model,
     }: {
       chat_id: string;
-      user_id: string;
       user_prompt: string;
+      model: string;
     }) => {
-      return await sendMessage(chat_id, user_id, user_prompt);
+      return await sendMessage(chat_id, user_prompt, model);
     },
 
-    onMutate: async ({ chat_id, user_id, user_prompt }) => {
+    onMutate: async ({ chat_id, user_prompt }) => {
       await queryClient.cancelQueries({
         queryKey: ["chatMessages", chat_id],
       });
@@ -32,7 +32,6 @@ export const useSendMessage = () => {
       const optimisticMessage = {
         id: "optimistic-message",
         chat_id,
-        user_id,
         text: user_prompt,
         response: "",
         timestamp: new Date().toISOString(),
@@ -62,9 +61,8 @@ export const useSendMessage = () => {
           context.previousMessages
         );
       }
-      toast.error(error?.message);
-      toast.error(error?.name);
-      console.error("Error sending message", error);
+      toast.error(error?.message || "Something went wrong");
+      console.error("Error sending message", error || "Something went wrong");
     },
   });
 };
