@@ -74,7 +74,6 @@ export const getChatMessages = async (chat_id: string) => {
   try {
     const response = await axiosAPI.get(`/messages/${chat_id}`);
     const data = response.data;
-    console.log("chat messages", data);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {

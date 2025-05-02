@@ -4,44 +4,36 @@ import React, { useRef, useState } from "react";
 import { BookOpen, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { uploadPdfFile } from "@/features/quiz/utils/uploadPdfFile";
-import { setUploadedFileName } from "../utils/quizSlice";
+import { useDispatch } from "react-redux";
+import { setUploadedFileUrl } from "../utils/quizSlice";
 
 const QuizPage = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.user.id);
 
   const [file, setFile] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
-    if (!selectedFile) return;
+    if (!selectedFile || selectedFile.type !== "application/pdf") {
+      toast.error("Please upload a valid PDF file.");
+      return;
+    }
 
+    const blobUrl = URL.createObjectURL(selectedFile);
     setFile(selectedFile);
+    setFileUrl(blobUrl);
   };
 
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!file) return;
-
+    if (!file || !fileUrl) return;
+    dispatch(setUploadedFileUrl(fileUrl));
+    window.open(fileUrl, "_blank");
     setFile(null);
+    setFileUrl(null);
     fileInputRef.current!.value = "";
-
-    // Uploading file to supabase storage
-    const toastId = toast.loading("Uploading file to supabase...");
-    const fileName = `${userId}/${file.name}`;
-    try {
-      const response = await uploadPdfFile(fileName, file);
-      console.log("Supabase response for file upload", response);
-      toast.success("File uploaded successfully", { id: toastId });
-      dispatch(setUploadedFileName(fileName));
-    } catch (error) {
-      console.error(error);
-      toast.error("Error uploading file", { id: toastId });
-    }
   };
 
   return (

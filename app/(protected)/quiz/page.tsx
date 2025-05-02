@@ -7,16 +7,17 @@ import GenerateQuiz from "@/features/quiz/components/GenerateQuiz";
 import TakeQuiz from "@/features/quiz/components/TakeQuiz";
 
 const QuizPage = () => {
-  const uploadedFileName = useSelector(
-    (state: RootState) => state.quiz.uploadedFileName
+  const uploadedFileUrl = useSelector(
+    (state: RootState) => state.quiz.uploadedFileUrl
   );
+  const quizData = useSelector((state: RootState) => state.quiz.quizData);
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center overflow-auto p-4">
-      <div className="flex h-full flex-col items-center justify-center">
-        {!uploadedFileName && <FileUpload />}
-        {uploadedFileName && <GenerateQuiz />}
-        <TakeQuiz />
+      <div className="flex flex-col items-center justify-center gap-4">
+        {quizData.questions.length <= 0 && !uploadedFileUrl && <FileUpload />}
+        {quizData.questions.length <= 0 && uploadedFileUrl && <GenerateQuiz />}
+        {quizData.questions.length > 0 && <TakeQuiz data={quizData} />}
       </div>
     </div>
   );

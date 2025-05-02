@@ -15,50 +15,22 @@ import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Clock, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { QuizData } from "../utils/types";
+import { useDispatch } from "react-redux";
+import { setQuizData, setUploadedFileUrl } from "../utils/quizSlice";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
-// Sample quiz data
-const quizData = [
-  {
-    id: 1,
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris",
-  },
-  {
-    id: 2,
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Mars", "Jupiter", "Venus"],
-    correctAnswer: "Mars",
-  },
-  {
-    id: 3,
-    question: "What is the largest mammal on Earth?",
-    options: ["Elephant", "Giraffe", "Blue Whale", "Polar Bear"],
-    correctAnswer: "Blue Whale",
-  },
-  {
-    id: 4,
-    question: "Which element has the chemical symbol 'O'?",
-    options: ["Gold", "Oxygen", "Osmium", "Oganesson"],
-    correctAnswer: "Oxygen",
-  },
-  {
-    id: 5,
-    question: "Who painted the Mona Lisa?",
-    options: [
-      "Vincent van Gogh",
-      "Pablo Picasso",
-      "Leonardo da Vinci",
-      "Michelangelo",
-    ],
-    correctAnswer: "Leonardo da Vinci",
-  },
-];
+type TakeQuizProps = {
+  data: QuizData;
+};
 
-export default function QuizComponent() {
+const TakeQuiz = ({ data }: TakeQuizProps) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>(
-    Array(quizData.length).fill("")
+    Array(data.questions.length).fill("")
   );
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minutes in seconds
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -81,7 +53,7 @@ export default function QuizComponent() {
   };
 
   const goToNextQuestion = () => {
-    if (currentQuestion < quizData.length - 1) {
+    if (currentQuestion < data?.questions?.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       finishQuiz();
@@ -96,8 +68,8 @@ export default function QuizComponent() {
 
   const finishQuiz = () => {
     let totalScore = 0;
-    quizData.forEach((question, index) => {
-      if (selectedAnswers[index] === question.correctAnswer) {
+    data?.questions?.forEach((question, index) => {
+      if (selectedAnswers[index] === question.answer) {
         totalScore++;
       }
     });
@@ -107,10 +79,16 @@ export default function QuizComponent() {
 
   const resetQuiz = () => {
     setCurrentQuestion(0);
-    setSelectedAnswers(Array(quizData.length).fill(""));
+    setSelectedAnswers(Array(data?.questions?.length).fill(""));
     setTimeRemaining(300);
     setQuizCompleted(false);
     setScore(0);
+  };
+
+  const handleNewQuiz = () => {
+    dispatch(setQuizData({ questions: [] }));
+    dispatch(setUploadedFileUrl(""));
+    router.push("/quiz");
   };
 
   const formatTime = (seconds: number) => {
@@ -119,11 +97,13 @@ export default function QuizComponent() {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
-  const progressPercentage = ((currentQuestion + 1) / quizData.length) * 100;
+  const progressPercentage =
+    ((currentQuestion + 1) / data?.questions?.length) * 100;
+  const scorePercentage = Math.round((score / data?.questions?.length) * 100);
 
   return (
-    <div className="w-full flex justify-center items-center min-h-[500px] p-4">
-      <Card className="w-full max-w-2xl shadow-lg border-green-800/20 dark:border-green-500/20">
+    <div className="w-full max-w-xl flex justify-center items-center  p-4">
+      <Card className="w-full shadow-lg border-green-800/20 dark:border-green-500/20">
         {!quizCompleted ? (
           <>
             <CardHeader className="space-y-1">
@@ -132,7 +112,7 @@ export default function QuizComponent() {
                   variant="outline"
                   className="px-3 py-1 bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 border-green-200 dark:border-green-800"
                 >
-                  Question {currentQuestion + 1} of {quizData.length}
+                  Question {currentQuestion + 1} of {data?.questions?.length}
                 </Badge>
                 <Badge
                   variant="outline"
@@ -145,10 +125,9 @@ export default function QuizComponent() {
               <Progress
                 value={progressPercentage}
                 className="h-2 bg-green-100 dark:bg-green-950/50"
-                // indicatorClassName="bg-green-600 dark:bg-green-500"
               />
               <CardTitle className="text-2xl font-bold">
-                {quizData[currentQuestion].question}
+                {data?.questions[currentQuestion].description}
               </CardTitle>
               <CardDescription>
                 Select the correct answer from the options below
@@ -160,28 +139,30 @@ export default function QuizComponent() {
                 onValueChange={handleAnswerSelect}
                 className="space-y-3"
               >
-                {quizData[currentQuestion].options.map((option, index) => (
-                  <div
-                    key={index}
-                    className={`flex items-center space-x-2 rounded-lg border p-4 transition-colors ${
-                      selectedAnswers[currentQuestion] === option
-                        ? "border-green-500 bg-green-50 dark:bg-green-950/30 dark:border-green-600"
-                        : "hover:bg-green-50/50 dark:hover:bg-green-950/20"
-                    }`}
-                  >
-                    <RadioGroupItem
-                      value={option}
-                      id={`option-${index}`}
-                      className="text-green-600 dark:text-green-500"
-                    />
-                    <Label
-                      htmlFor={`option-${index}`}
-                      className="w-full cursor-pointer font-medium"
+                {data?.questions[currentQuestion].options.map(
+                  (option, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center space-x-2 rounded-lg border p-4 transition-colors ${
+                        selectedAnswers[currentQuestion] === option
+                          ? "border-green-500 bg-green-50 dark:bg-green-950/30 dark:border-green-600"
+                          : "hover:bg-green-50/50 dark:hover:bg-green-950/20"
+                      }`}
                     >
-                      {option}
-                    </Label>
-                  </div>
-                ))}
+                      <RadioGroupItem
+                        value={option}
+                        id={`option-${index}`}
+                        className="text-green-600 dark:text-green-500"
+                      />
+                      <Label
+                        htmlFor={`option-${index}`}
+                        className="w-full cursor-pointer font-medium"
+                      >
+                        {option}
+                      </Label>
+                    </div>
+                  )
+                )}
               </RadioGroup>
             </CardContent>
             <CardFooter className="flex justify-between border-t p-4 dark:border-green-950/30">
@@ -198,7 +179,9 @@ export default function QuizComponent() {
                 disabled={!selectedAnswers[currentQuestion]}
                 className="gap-1 bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white"
               >
-                {currentQuestion === quizData.length - 1 ? "Finish" : "Next"}{" "}
+                {currentQuestion === data?.questions?.length - 1
+                  ? "Finish"
+                  : "Next"}{" "}
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </CardFooter>
@@ -210,44 +193,76 @@ export default function QuizComponent() {
                 Quiz Completed!
               </CardTitle>
               <CardDescription>
-                You scored {score} out of {quizData.length}
+                You scored {score} out of {data?.questions?.length}
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col items-center justify-center py-10">
+            <CardContent className="flex flex-col items-center justify-center">
               <div className="relative mb-6">
-                <div className="w-32 h-32 rounded-full bg-green-100 dark:bg-green-950/30 flex items-center justify-center">
-                  <span className="text-4xl font-bold text-green-600 dark:text-green-500">
-                    {Math.round((score / quizData.length) * 100)}%
+                <div
+                  className={cn(
+                    "w-32 h-32 rounded-full flex items-center justify-center",
+                    scorePercentage >= 50
+                      ? "bg-green-500 dark:bg-green-500"
+                      : "bg-red-500 dark:bg-red-500"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "text-4xl font-bold",
+                      scorePercentage >= 50
+                        ? "text-green-50 dark:text-green-50"
+                        : "text-red-50 dark:text-red-50"
+                    )}
+                  >
+                    {scorePercentage}%
                   </span>
                 </div>
-                <CheckCircle2 className="absolute bottom-0 right-0 w-10 h-10 text-green-600 dark:text-green-500 bg-white dark:bg-background rounded-full" />
+                <CheckCircle2
+                  className={cn(
+                    "absolute bottom-0 right-0 w-10 h-10 rounded-full",
+                    scorePercentage >= 50
+                      ? "text-green-200 bg-green-500 dark:text-green-200 dark:bg-green-500"
+                      : "text-red-200 bg-red-500 dark:text-red-200 dark:bg-red-500"
+                  )}
+                />
               </div>
 
-              <div className="w-full max-w-xs space-y-2">
-                {quizData.map((question, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm">
-                    <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                        selectedAnswers[index] === question.correctAnswer
-                          ? "bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-500"
-                          : "bg-red-100 text-red-600 dark:bg-red-950/30 dark:text-red-500"
-                      }`}
-                    >
-                      {selectedAnswers[index] === question.correctAnswer
-                        ? "✓"
-                        : "✗"}
+              <div className="w-full space-y-2">
+                {data?.questions?.map((question, index) => (
+                  <div className="flex flex-col gap-2" key={index}>
+                    <div className="flex items-center gap-2 text-md">
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                          selectedAnswers[index] === question.answer
+                            ? "bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-500"
+                            : "bg-red-100 text-red-600 dark:bg-red-950/30 dark:text-red-500"
+                        }`}
+                      >
+                        {selectedAnswers[index] === question.answer ? "✓" : "✗"}
+                      </div>
+                      <span>
+                        Question {index + 1}: {question.description}
+                      </span>
                     </div>
-                    <span className="truncate">Question {index + 1}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Answer: {question.answer}
+                    </span>
                   </div>
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="flex justify-center border-t p-4 dark:border-green-950/30">
+            <CardFooter className="flex items-center gap-4 justify-center border-t p-4 dark:border-green-950/30">
               <Button
                 onClick={resetQuiz}
                 className="bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white"
               >
                 Restart Quiz
+              </Button>
+              <Button
+                className="bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white"
+                onClick={handleNewQuiz}
+              >
+                New Quiz
               </Button>
             </CardFooter>
           </>
@@ -255,4 +270,6 @@ export default function QuizComponent() {
       </Card>
     </div>
   );
-}
+};
+
+export default TakeQuiz;
