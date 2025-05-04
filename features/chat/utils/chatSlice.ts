@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Chat } from "./types";
 
+export type Model =
+  | "OpenAI"
+  | "EnhancedOpenAI"
+  | "Deepseek"
+  | "EnhancedDeepseek"
+  | "DeepseekQ"
+  | "Search With Images";
+
 type ChatState = {
   currentChat: Chat | null;
-  selectedModel: string;
+  selectedModel: Model;
 };
 
 const initialState: ChatState = {
@@ -18,7 +26,7 @@ const chatSlice = createSlice({
     setCurrentChat: (state, action: PayloadAction<Chat | null>) => {
       state.currentChat = action.payload;
     },
-    setSelectedModel: (state, action: PayloadAction<string>) => {
+    setSelectedModel: (state, action: PayloadAction<Model>) => {
       state.selectedModel = action.payload;
     },
   },

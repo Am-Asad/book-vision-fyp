@@ -14,4 +14,7 @@ export const models = [
   {
     name: "DeepseekQ",
   },
+  {
+    name: "Search With Images",
+  },
 ];

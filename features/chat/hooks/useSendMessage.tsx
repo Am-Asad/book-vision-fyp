@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendMessage } from "../utils/chatApi";
 import { Message } from "../utils/types";
 import toast from "react-hot-toast";
+import { Model } from "../utils/chatSlice";
 
 export const useSendMessage = () => {
   const queryClient = useQueryClient();
@@ -14,7 +15,7 @@ export const useSendMessage = () => {
     }: {
       chat_id: string;
       user_prompt: string;
-      model: string;
+      model: Model;
     }) => {
       return await sendMessage(chat_id, user_prompt, model);
     },

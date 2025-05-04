@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { createChat } from "../utils/chatApi";
 import { useRouter } from "next/navigation";
-import { uploadPdfFile } from "@/features/quiz/utils/uploadPdfFile";
 
 const useCreateChat = () => {
   const queryClient = useQueryClient();
@@ -16,19 +15,7 @@ const useCreateChat = () => {
       const toastId = toast.loading("Creating chat...");
       return { toastId };
     },
-    onSuccess: async (data, variables, context) => {
-      try {
-        const fileName = `${variables?.user_id}/${data?.chat_id}`;
-        const repsonse = await uploadPdfFile(fileName, variables?.file);
-        console.log("Response from uploadPdfFile", repsonse);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log("Error from uploadPdfFile", error.message);
-        } else {
-          console.log("Error from uploadPdfFile", error);
-        }
-        return;
-      }
+    onSuccess: async (data, _, context) => {
       try {
         toast.success(data?.message, { id: context?.toastId });
         queryClient.invalidateQueries({ queryKey: ["chatsHistory"] });

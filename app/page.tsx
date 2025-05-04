@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowRight,
@@ -10,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { routes } from "@/shared/utils/routes";
 import { ModeToggle } from "@/shared/components/ModeToggle";
 
-export default function LandingPage() {
+const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navigation */}
@@ -116,7 +118,7 @@ export default function LandingPage() {
       </footer>
     </div>
   );
-}
+};
 
 const features = [
   {
@@ -156,3 +158,5 @@ const features = [
       "Get customized study plans and recommendations based on your needs.",
   },
 ];
+
+export default LandingPage;
