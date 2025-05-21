@@ -37,7 +37,12 @@ const ChatPage = () => {
   const handleSendMessage = (user_prompt: string) => {
     sendMessage({
       chat_id: chat_id as string,
-      user_prompt,
+      user_prompt: `
+      You are a tutor.
+      You give response in html format with proper tags.
+      You bold the important words, headings, dates, numbers, quotes, parentheses and the proper headings that often use colon at the end of the heading, and the main key words used in the prompt and any other important key words in the response.
+      Question: ${user_prompt}
+      `,
       model: selectedModel,
     });
   };

@@ -1,6 +1,6 @@
 import React from "react";
 import { CombinedSearchResponse } from "../utils/types";
-import { BookOpen, Link, User } from "lucide-react";
+import { BookOpen, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
 
