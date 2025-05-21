@@ -4,6 +4,7 @@ import chatReducer from "@/features/chat/utils/chatSlice";
 import userReducer from "@/store/userSlice";
 import globalReducer from "@/shared/utils/GlobalSlice";
 import quizReducer from "@/features/quiz/utils/quizSlice";
+import webSearchReducer from "@/features/web-search/utils/webSearchSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     user: userReducer,
     chat: chatReducer,
     quiz: quizReducer,
+    webSearch: webSearchReducer,
   },
 });
 

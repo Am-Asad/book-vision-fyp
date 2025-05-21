@@ -45,7 +45,7 @@ const useSignin = () => {
       router.push(routes.chats);
     },
     onError: (error, _, context) => {
-      toast.error(error?.message, {
+      toast.error(error?.message || "Failed to signin", {
         id: context?.toastId,
       });
     },

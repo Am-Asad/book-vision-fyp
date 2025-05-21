@@ -33,7 +33,7 @@ const useDeleteChat = () => {
     },
     onError: (error, _, context) => {
       console.error("delete chat error", error);
-      toast.error(error?.message, {
+      toast.error(error?.message || "Failed to delete chat", {
         id: context?.toastId,
       });
     },

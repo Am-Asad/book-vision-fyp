@@ -1,7 +1,5 @@
 {
-  "/(auth)/signup/page": "app/(auth)/signup/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/(auth)/signin/page": "app/(auth)/signin/page.js",
-  "/(protected)/quiz/page": "app/(protected)/quiz/page.js",
-  "/(protected)/chats/[id]/page": "app/(protected)/chats/[id]/page.js",
-  "/(protected)/chats/page": "app/(protected)/chats/page.js"
+  "/(protected)/web-search/page": "app/(protected)/web-search/page.js"
 }

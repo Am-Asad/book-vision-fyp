@@ -3,6 +3,9 @@ export const models = [
     name: "OpenAI",
   },
   {
+    name: "GeminiFlash",
+  },
+  {
     name: "EnhancedOpenAI",
   },
   {
@@ -13,8 +16,5 @@ export const models = [
   },
   {
     name: "DeepseekQ",
-  },
-  {
-    name: "Search With Images",
   },
 ];

@@ -26,7 +26,7 @@ const useCreateChat = () => {
     },
     onError: (error, _, context) => {
       console.error("create chat error", error);
-      toast.error(error?.message, {
+      toast.error(error?.message || "Failed to create chat", {
         id: context?.toastId,
       });
     },

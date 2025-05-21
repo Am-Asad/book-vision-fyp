@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BookOpen, ChevronDown, Settings, User2 } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -18,9 +19,9 @@ import {
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/shared/components/ModeToggle";
 import NewChatBtn from "@/features/chat/components/NewChatBtn";
-import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import LogoutUser from "@/features/chat/components/LogoutUser";
 import TakeQuizBtn from "@/features/chat/components/TakeQuizBtn";
+import WebSearchBtn from "@/features/chat/components/WebSearch";
 
 const ChatsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -51,6 +52,7 @@ const ChatsLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
             <NewChatBtn />
             <TakeQuizBtn />
+            <WebSearchBtn />
           </SidebarHeader>
           {/* Sidebar content */}
           <SidebarContent>
@@ -85,7 +87,9 @@ const ChatsLayout = ({ children }: { children: React.ReactNode }) => {
             <SidebarTrigger />
             <div className="flex w-full items-center justify-between">
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-semibold">Book Tutor</h1>
+                <Link href="/" className="text-lg font-semibold">
+                  Book Tutor
+                </Link>
               </div>
               <div className="flex items-center gap-2">
                 <ModeToggle />

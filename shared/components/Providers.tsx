@@ -23,7 +23,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
           </ThemeProvider>
           <Toaster />
         </Provider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </>
   );

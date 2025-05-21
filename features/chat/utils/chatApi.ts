@@ -101,6 +101,8 @@ export const sendMessage = async (
     messageUrl = `enhanced_response_deepseek?chat_id=${chat_id}&user_prompt=${user_prompt}`;
   } else if (model === "DeepseekQ") {
     messageUrl = `deepseek_q_response?chat_id=${chat_id}&user_prompt=${user_prompt}`;
+  } else if (model === "GeminiFlash") {
+    messageUrl = `gemini_flash_response?chat_id=${chat_id}&user_prompt=${user_prompt}`;
   }
 
   try {

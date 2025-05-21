@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { generateQuiz } from "./quizApi";
+import { generateQuiz } from "../utils/quizApi";
 import toast from "react-hot-toast";
 import { setQuizData, setUploadedFileUrl } from "../utils/quizSlice";
 import { useDispatch } from "react-redux";

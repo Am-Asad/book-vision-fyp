@@ -127,10 +127,6 @@ const ChatPage = () => {
             handleSendMessage={handleSendMessage}
             isPending={isPending}
           />
-          {/* <ChatInput
-            handleSendMessage={handleSendMessage}
-            isPending={isPending}
-          /> */}
           <div className="mt-2 text-center text-xs text-muted-foreground">
             Book Tutor can make mistakes. Check important info.
           </div>

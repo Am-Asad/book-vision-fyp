@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { routes } from "@/shared/utils/routes";
 
 const TakeQuizBtn = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const TakeQuizBtn = () => {
         variant="outline"
         className="w-full justify-start gap-2"
         onClick={() => {
-          router.push("/quiz");
+          router.push(routes.quiz);
         }}
       >
         <Plus className="h-4 w-4" />

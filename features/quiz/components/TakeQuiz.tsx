@@ -145,7 +145,7 @@ const TakeQuiz = ({ data }: TakeQuizProps) => {
                       key={index}
                       className={`flex items-center space-x-2 rounded-lg border p-4 transition-colors ${
                         selectedAnswers[currentQuestion] === option
-                          ? "border-green-500 bg-green-50 dark:bg-green-950/30 dark:border-green-600"
+                          ? "border-green-500 dark:border-green-500 border-2"
                           : "hover:bg-green-50/50 dark:hover:bg-green-950/20"
                       }`}
                     >

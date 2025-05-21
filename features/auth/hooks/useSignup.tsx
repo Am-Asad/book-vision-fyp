@@ -23,7 +23,7 @@ const useSignUp = () => {
     },
     onError: (error, _, context) => {
       console.log("signup error", error);
-      toast.error(error?.message, {
+      toast.error(error?.message || "Failed to signup", {
         id: context?.toastId,
       });
     },

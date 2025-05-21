@@ -23,15 +23,17 @@ export const useEditChatTitle = () => {
       const toastId = toast.loading("Updating chat title...");
       return { toastId };
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (_, __, context) => {
       toast.success("Chat title updated successfully", {
         id: context?.toastId,
       });
       queryClient.invalidateQueries({ queryKey: ["chatsHistory"] });
       dispatch(setCurrentChat(null));
     },
-    onError: (error, variables, context) => {
-      toast.error("Failed to update chat title", { id: context?.toastId });
+    onError: (error, _, context) => {
+      toast.error(error?.message || "Failed to update chat title", {
+        id: context?.toastId,
+      });
     },
   });
 };
